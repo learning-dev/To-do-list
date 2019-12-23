@@ -7,15 +7,29 @@
   <title>To Do list</title>
   <link rel="stylesheet" href="index.css">
 </head>
-<script src="dom-script.js"></script>
+
 
 <body>
   <h1>TO-DO List</h1>
-  <div class="input-caption">
-    <h2>Create your To-do list below</h2>
-  <input type="text" placeholder="Task to add" size="50">
-  <input type="submit">
+  <div class="container align-items">
+
+    <div class="input-caption">
+      <h2>Create your To-do list below</h2>
+
+      <form  class="add-list">
+        <input type="text" placeholder="Task to add"  id="task" size="50">
+    <input type="submit" value="Add">
+      </form>
+    
+    </div>
+  
+    <div class="list-items" id="task-list">
+      <li>Task 1</li>
+      <li>Task 2</li>
+      <li>Task 3</li>
+    </div>
   </div>
   
+  <script src="dom-script.js"></script>
 </body>
 </html>
