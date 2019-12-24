@@ -28,9 +28,16 @@ h1 {
 }
 
 
+
 .delete-btn {
-  width: auto;
-  height: auto;
-  background-color: red;
+  font: bold 18px/14px Helvetica;
+  width: 100px;
+  height: 20px;
+  background-color: #FF5733;
+  position: absolute;
+  right: 50px;
+  border-radius: 30px;
+  color: #17202A;
+
   
 }
