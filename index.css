@@ -21,7 +21,7 @@ h1 {
 .list-container {
   text-align: left;
   margin: 5%;
-  font: oblique 24px/22px Helvetica;
+  font: oblique 24px/30px Helvetica;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,7 +35,7 @@ h1 {
   height: 20px;
   background-color: #FF5733;
   position: absolute;
-  right: 50px;
+  right: 100px;
   border-radius: 30px;
   color: #17202A;
 
