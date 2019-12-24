@@ -1,5 +1,30 @@
 const form = document.querySelector('.add-list-form');
 const taskList = document.getElementById('task-list');
+let localTaskArray;
+
+if (localStorage.getItem('tasks')) {
+  localTaskArray = JSON.parse(localStorage.getItem('tasks'));
+} else {
+  localTaskArray = [];
+}
+
+localStorage.setItem('tasks', JSON.stringify(localTaskArray));
+
+// function displayLocaltask() {
+
+//   const li = document.createElement('li');
+//   li.
+// }
+
+
+// create delete button
+function createDeleteButton() {
+  const deleteButton = document.createElement('button');
+
+  deleteButton.className = 'delete-btn';
+  deleteButton.appendChild(document.createTextNode('delete'));
+  return deleteButton;
+}
 
 
 function addItemToList(event) {
@@ -10,11 +35,8 @@ function addItemToList(event) {
   newTaskTag.appendChild(newTaskTextnode);
 
   // delete button
-  const deleteButton = document.createElement('button');
-
-  deleteButton.className = 'delete-btn';
-  deleteButton.appendChild(document.createTextNode('delete'));
-
+  const deleteButton = createDeleteButton();
+  
   newTaskTag.appendChild(deleteButton);
   taskList.appendChild(newTaskTag);
 }
@@ -27,6 +49,8 @@ function completeTask(event) {
     const li = document.createElement('li');
     li.appendChild(strike);
     taskList.removeChild(event.target);
+    const deletebtn = createDeleteButton();
+    li.appendChild(deletebtn);
     taskList.appendChild(li);
   }
 }
