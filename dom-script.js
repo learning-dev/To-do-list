@@ -1,5 +1,4 @@
 const form = document.querySelector('.add-list');
-console.log(form);
 const taskList = document.getElementById('task-list');
 
 

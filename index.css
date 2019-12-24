@@ -1,19 +1,20 @@
 h1 {
-  text-align: center;
-  margin: auto 0;
+	text-align: center;
+	margin: auto 0;
 }
 
-.align-items {
-  margin: auto 0;
-  text-align: center;
+.container {
+	margin: auto 0;
+	text-align: center  ;
 }
 
 .list-items {
- /* margin: 5%;
- padding-right: 20%; */
+	margin: 5%;
+ padding-right: 20%;
+ display: inline-block;
 }
 
-.add-list {
 
-}
+
+
 
