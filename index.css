@@ -5,16 +5,17 @@ h1 {
 
 .container {
 	margin: auto 0;
-	text-align: center  ;
+	text-align: center;
 }
 
 .list-items {
 	margin: 5%;
- padding-right: 20%;
- display: inline-block;
+	padding-right: 20%;
+	display: inline-block;
 }
 
-
-
-
-
+.delete-btn {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}
