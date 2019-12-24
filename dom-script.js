@@ -20,7 +20,6 @@ function addItemToList(event) {
 }
 
 function completeTask(event) {
-  console.log(event);
   if (event.target.localName === 'li') {
     const strike = document.createElement('s');
     const text = event.target.textContent.replace('X', '');
