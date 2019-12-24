@@ -1,21 +1,36 @@
+
+
 h1 {
 	text-align: center;
-	margin: auto 0;
+  margin: auto 0;
+  padding-top: 1rem;
+  font: normal 64px/46px Flood Std;
+  background-color: #34495E;
+  color: white;
 }
 
 .container {
 	margin: auto 0;
-	text-align: center;
+  text-align: center;
+  font: normal 18px/22px Helvetica; 
+
 }
 
-.list-items {
-	margin: 5%;
-	padding-right: 20%;
-	display: inline-block;
+
+
+.list-container {
+  text-align: left;
+  margin: 5%;
+  font: oblique 24px/22px Helvetica;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 
 .delete-btn {
-  width: 20px;
-  height: 20px;
+  width: auto;
+  height: auto;
   background-color: red;
+  
 }

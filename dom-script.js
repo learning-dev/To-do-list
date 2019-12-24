@@ -1,4 +1,4 @@
-const form = document.querySelector('.add-list');
+const form = document.querySelector('.add-list-form');
 const taskList = document.getElementById('task-list');
 
 
@@ -13,13 +13,14 @@ function addItemToList(event) {
   const deleteButton = document.createElement('button');
 
   deleteButton.className = 'delete-btn';
-  deleteButton.appendChild(document.createTextNode('X'));
+  deleteButton.appendChild(document.createTextNode('delete'));
 
   newTaskTag.appendChild(deleteButton);
   taskList.appendChild(newTaskTag);
 }
 
 function completeTask(event) {
+  console.log(event);
   if (event.target.localName === 'li') {
     const strike = document.createElement('s');
     const text = event.target.textContent.replace('X', '');
