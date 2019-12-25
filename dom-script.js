@@ -26,6 +26,7 @@ function displayLocaltasks() {
   Object.keys(localTaskStore).forEach((task) => {
     const li = document.createElement('li');
     li.setAttribute('draggable', 'true');
+
     // eslint-disable-next-line no-restricted-syntax
     if (localTaskStore[task] === true) {
       const strike = document.createElement('s');
@@ -64,10 +65,12 @@ function addItemToList(event) {
 function completeTask(event) {
   if (event.target.localName === 'li') {
     const strike = document.createElement('s');
-    const text = event.target.textContent.replace('delete', '');
+    const strLength = event.target.textContent.length;
+    const text = event.target.textContent.slice(0, strLength - 6);
     strike.appendChild(document.createTextNode(text));
     const li = document.createElement('li');
     li.appendChild(strike);
+    li.setAttribute('draggable', 'true');
     taskList.removeChild(event.target);
     const deletebtn = createDeleteButton();
     li.appendChild(deletebtn);
@@ -82,10 +85,12 @@ function uncheckTask(event) {
   if (event.target.localName === 's') {
     const text = event.target.innerText;
     const parent = event.target.parentElement;
+    parent.setAttribute('draggable', 'true');
     parent.removeChild(event.target);
-    parent.appendChild(document.createTextNode(text));
+    const deleteBtn = parent.childNodes[0];
+    parent.insertBefore(document.createTextNode(text), deleteBtn);
 
-    // set locally 
+    // set locally
     localTaskStore[text] = false;
     setLocally();
   }
@@ -107,12 +112,32 @@ function removeItemFromList(event) {
   }
 }
 
+let draggedItem;
 
-function dragStart () {
+function dragStart (event) {
   console.log('drag possible');
+  draggedItem = this;
 }
 
+function dragEnd (event) {
+  if (draggedItem !== this) {
+    console.log(draggedItem);
+    console.log(this);
+    console.log('inside dragend');
+  }
+}
 
+function drop(event) {
+  if (draggedItem !== this) {
+    console.log(draggedItem);
+    console.log(this);
+  }
+  console.log('inside drop');
+}
+
+function dragOver () {
+  console.log('drag Over');
+}
 
 // display local items if any
 displayLocaltasks();
@@ -123,3 +148,6 @@ taskList.addEventListener('click', removeItemFromList);
 taskList.addEventListener('click', completeTask);
 taskList.addEventListener('click', uncheckTask);
 taskList.addEventListener('dragstart', dragStart);
+taskList.addEventListener('dragover', dragOver);
+taskList.addEventListener('dragend', dragEnd);
+taskList.addEventListener('drop', drop);
