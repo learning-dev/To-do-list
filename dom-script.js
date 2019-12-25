@@ -78,6 +78,18 @@ function completeTask(event) {
     setLocally();
   }
 }
+function uncheckTask(event) {
+  if (event.target.localName === 's') {
+    const text = event.target.innerText;
+    const parent = event.target.parentElement;
+    parent.removeChild(event.target);
+    parent.appendChild(document.createTextNode(text));
+
+    // set locally 
+    localTaskStore[text] = false;
+    setLocally();
+  }
+}
 
 
 function removeItemFromList(event) {
@@ -102,3 +114,4 @@ setLocally();
 form.addEventListener('submit', addItemToList);
 taskList.addEventListener('click', removeItemFromList);
 taskList.addEventListener('click', completeTask);
+taskList.addEventListener('click', uncheckTask);
