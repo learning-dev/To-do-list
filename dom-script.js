@@ -25,9 +25,8 @@ function createDeleteButton() {
 function displayLocaltasks() {
   Object.keys(localTaskStore).forEach((task) => {
     const li = document.createElement('li');
-
+    li.setAttribute('draggable', 'true');
     // eslint-disable-next-line no-restricted-syntax
-
     if (localTaskStore[task] === true) {
       const strike = document.createElement('s');
       strike.appendChild(document.createTextNode(task));
@@ -46,6 +45,7 @@ function addItemToList(event) {
   event.preventDefault();
   const newTask = form.getElementsByTagName('input');
   const newTaskTag = document.createElement('li');
+  newTaskTag.setAttribute('draggable', 'true');
   const newTaskTextnode = document.createTextNode(newTask[0].value);
   newTaskTag.appendChild(newTaskTextnode);
 
@@ -107,6 +107,13 @@ function removeItemFromList(event) {
   }
 }
 
+
+function dragStart () {
+  console.log('drag possible');
+}
+
+
+
 // display local items if any
 displayLocaltasks();
 setLocally();
@@ -115,3 +122,4 @@ form.addEventListener('submit', addItemToList);
 taskList.addEventListener('click', removeItemFromList);
 taskList.addEventListener('click', completeTask);
 taskList.addEventListener('click', uncheckTask);
+taskList.addEventListener('dragstart', dragStart);
