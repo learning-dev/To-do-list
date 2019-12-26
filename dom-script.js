@@ -1,18 +1,19 @@
 /* eslint-disable guard-for-in */
 const form = document.querySelector('.add-list-form');
 const taskList = document.getElementById('task-list');
-let localTaskStore;
+let todos;
 
-if (localStorage.getItem('tasks')) {
-  localTaskStore = JSON.parse(localStorage.getItem('tasks'));
+if (localStorage.getItem('todos')) {
+  todos = JSON.parse(localStorage.getItem('todos'));
 } else {
-  localTaskStore = {};
+  todos = [];
 }
 
 const setLocally = () => {
-  localStorage.setItem('tasks', JSON.stringify(localTaskStore));
+  localStorage.setItem('todos', JSON.stringify(todos));
 };
-console.log('localtask', localTaskStore);
+
+console.log('localtask', todos);
 
 
 // create delete button
@@ -25,13 +26,6 @@ function createDeleteButton() {
 }
 
 
-// function addItem(){
-//   todos.push({text: "something", status: false})
-//   localStorage.setItem(todos, todos)
-//   domRefresh()
-
-// }
-
 function domRefresh() {
   // delete the whole list
   const listElement = document.getElementById('task-list');
@@ -39,17 +33,16 @@ function domRefresh() {
     listElement.removeChild(listElement.firstChild);
   }
   // runs a for loop
-  Object.keys(localTaskStore).forEach((task) => {
+  todos.forEach((task) => {
     const li = document.createElement('li');
     li.setAttribute('draggable', 'true');
 
-    // eslint-disable-next-line no-restricted-syntax
-    if (localTaskStore[task] === true) {
+    if (task['status'] === true) {
       const strike = document.createElement('s');
-      strike.appendChild(document.createTextNode(task));
+      strike.appendChild(document.createTextNode(task['text']));
       li.appendChild(strike);
     } else {
-      li.appendChild(document.createTextNode(task));
+      li.appendChild(document.createTextNode(task['text']));
     }
     const delBtn = createDeleteButton();
     li.appendChild(delBtn);
@@ -57,35 +50,30 @@ function domRefresh() {
   });
 }
 
-function addItemToList(event) {
-
+function addItemToList() {
   const taskText = document.querySelector('input').value;
-  console.log('text', taskText);
 
-  localTaskStore[taskText] = false;
-  localStorage.setItem('tasks', JSON.stringify(localTaskStore));
+  todos.push({ text: taskText, status: false });
+  localStorage.setItem('todos', JSON.stringify(todos));
 
   domRefresh();
-
 }
 
 function checkTask(event) {
   if (event.target.localName === 'li') {
-    const strike = document.createElement('s');
-    const strLength = event.target.textContent.length;
-    const text = event.target.textContent.slice(0, strLength - 'delete'.length);
-    strike.appendChild(document.createTextNode(text));
-    const li = document.createElement('li');
-    li.appendChild(strike);
-    li.setAttribute('draggable', 'true');
-    taskList.removeChild(event.target);
-    const deletebtn = createDeleteButton();
-    li.appendChild(deletebtn);
-    taskList.appendChild(li);
+    const Tasktext = event.target.innerText.split('\n')[0];
+
+    // mark the task as completed
+    todos.forEach((task) => {
+      if (task['text'] === Tasktext) {
+        task['status'] = true;
+      }
+    });
+
+    domRefresh();
 
     // mark it as complete in local storage
-    localTaskStore[text] = true;
-    setLocally();
+    localStorage.setItem('todos', JSON.stringify(todos));
   }
 }
 
@@ -99,7 +87,7 @@ function uncheckTask(event) {
     parent.insertBefore(document.createTextNode(text), deleteBtn);
 
     // set locally
-    localTaskStore[text] = false;
+    todos[text] = false;
     setLocally();
   }
 }
@@ -114,7 +102,7 @@ function removeItemFromList(event) {
 
     // remove from local storage
     const text = task.innerText.replace('delete', '');
-    delete localTaskStore[text];
+    delete todos[text];
     setLocally();
   }
 }
