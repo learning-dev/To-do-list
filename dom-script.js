@@ -12,6 +12,8 @@ if (localStorage.getItem('tasks')) {
 const setLocally = () => {
   localStorage.setItem('tasks', JSON.stringify(localTaskStore));
 };
+console.log('localtask', localTaskStore);
+
 
 // create delete button
 function createDeleteButton() {
@@ -22,7 +24,21 @@ function createDeleteButton() {
   return deleteButton;
 }
 
-function displayLocaltasks() {
+
+// function addItem(){
+//   todos.push({text: "something", status: false})
+//   localStorage.setItem(todos, todos)
+//   domRefresh()
+
+// }
+
+function domRefresh() {
+  // delete the whole list
+  const listElement = document.getElementById('task-list');
+  while (listElement.firstChild) {
+    listElement.removeChild(listElement.firstChild);
+  }
+  // runs a for loop
   Object.keys(localTaskStore).forEach((task) => {
     const li = document.createElement('li');
     li.setAttribute('draggable', 'true');
@@ -41,32 +57,23 @@ function displayLocaltasks() {
   });
 }
 
-
 function addItemToList(event) {
-  event.preventDefault();
-  const newTask = form.getElementsByTagName('input');
-  const newTaskTag = document.createElement('li');
-  newTaskTag.setAttribute('draggable', 'true');
-  const newTaskTextnode = document.createTextNode(newTask[0].value);
-  newTaskTag.appendChild(newTaskTextnode);
 
-  // delete button
-  const deleteButton = createDeleteButton();
+  const taskText = document.querySelector('input').value;
+  console.log('text', taskText);
 
-  newTaskTag.appendChild(deleteButton);
-  taskList.appendChild(newTaskTag);
+  localTaskStore[taskText] = false;
+  localStorage.setItem('tasks', JSON.stringify(localTaskStore));
 
+  domRefresh();
 
-  // store locally
-  localTaskStore[newTask[0].value] = false;
-  setLocally();
 }
 
-function completeTask(event) {
+function checkTask(event) {
   if (event.target.localName === 'li') {
     const strike = document.createElement('s');
     const strLength = event.target.textContent.length;
-    const text = event.target.textContent.slice(0, strLength - 6);
+    const text = event.target.textContent.slice(0, strLength - 'delete'.length);
     strike.appendChild(document.createTextNode(text));
     const li = document.createElement('li');
     li.appendChild(strike);
@@ -81,6 +88,7 @@ function completeTask(event) {
     setLocally();
   }
 }
+
 function uncheckTask(event) {
   if (event.target.localName === 's') {
     const text = event.target.innerText;
@@ -100,54 +108,66 @@ function uncheckTask(event) {
 function removeItemFromList(event) {
   if (event.target.classList.contains('delete-btn')) {
     // eslint-disable-next-line no-restricted-globals
-    if (confirm('Are you sure want to delete the task?')) {
-      const task = event.target.parentElement;
-      taskList.removeChild(task);
 
-      // remove from local storage
-      const text = task.innerText.replace('delete', '');
-      delete localTaskStore[text];
-      setLocally();
-    }
+    const task = event.target.parentElement;
+    taskList.removeChild(task);
+
+    // remove from local storage
+    const text = task.innerText.replace('delete', '');
+    delete localTaskStore[text];
+    setLocally();
   }
 }
 
-let draggedItem;
+// let draggedItem;
 
-function dragStart (event) {
-  console.log('drag possible');
-  draggedItem = this;
-}
+// function dragStart (event) {
+//   console.log('drag possible');
+//   draggedItem = event.
+//   console.log('current Item', draggedItem);
+// }
 
-function dragEnd (event) {
-  if (draggedItem !== this) {
-    console.log(draggedItem);
-    console.log(this);
-    console.log('inside dragend');
-  }
-}
+// function dragEnd (event) {
+//   if (draggedItem !== this) {
+//     console.log(draggedItem);
+//     console.log(this);
+//   }
+//   console.log('inside dragend');
+// }
 
-function drop(event) {
-  if (draggedItem !== this) {
-    console.log(draggedItem);
-    console.log(this);
-  }
-  console.log('inside drop');
-}
 
-function dragOver () {
-  console.log('drag Over');
-}
+// function dragOver (event) {
+//   console.log('drag Over');
+//   event.preventDefault();
+// }
+
+// function dragEnter () {
+//   console.log('drag Over');
+//   event.preventDefault();
+// }
+
+// function drop(event) {
+//   if (draggedItem !== this) {
+//     console.log(draggedItem);
+//     console.log(this);
+//     console.log(event);
+//   }
+//   console.log('inside drop');
+// }
+
 
 // display local items if any
-displayLocaltasks();
+domRefresh();
 setLocally();
 // Event Listeners
 form.addEventListener('submit', addItemToList);
 taskList.addEventListener('click', removeItemFromList);
-taskList.addEventListener('click', completeTask);
+taskList.addEventListener('click', checkTask);
 taskList.addEventListener('click', uncheckTask);
-taskList.addEventListener('dragstart', dragStart);
-taskList.addEventListener('dragover', dragOver);
-taskList.addEventListener('dragend', dragEnd);
-taskList.addEventListener('drop', drop);
+
+
+// taskList.addEventListener('dragstart', dragStart);
+// taskList.addEventListener('dragend', dragEnd);
+// taskList.addEventListener('dragover', dragOver);
+// taskList.addEventListener('dragenter', dragEnter);
+// taskList.addEventListener('drop', drop);
