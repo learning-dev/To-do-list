@@ -33,9 +33,13 @@ function domRefresh() {
     listElement.removeChild(listElement.firstChild);
   }
   // runs a for loop
+
   todos.forEach((task) => {
     const li = document.createElement('li');
+    const position = todos.indexOf(task);
+
     li.setAttribute('draggable', 'true');
+    li.setAttribute('position', position);
 
     if (task['status'] === true) {
       const strike = document.createElement('s');
@@ -55,17 +59,17 @@ function addItemToList() {
 
   todos.push({ text: taskText, status: false });
   localStorage.setItem('todos', JSON.stringify(todos));
-
+  console.log('adfter', todos);
   domRefresh();
 }
 
 function checkTask(event) {
   if (event.target.localName === 'li') {
-    const Tasktext = event.target.innerText.split('\n')[0];
-
+    const Tasktext = event.target.innerText.split('\n')[0].trim();
+    const pos = event.target.getAttribute('position');
     // mark the task as completed
     todos.forEach((task) => {
-      if (task['text'] === Tasktext) {
+      if (task['text'].trim() === Tasktext) {
         task['status'] = true;
       }
     });
@@ -82,7 +86,7 @@ function uncheckTask(event) {
     const Tasktext = event.target.innerText;
 
     todos.forEach((task) => {
-      if (task['text'] === Tasktext) {
+      if (task['text'].trim() === Tasktext) {
         task['status'] = false;
       }
     });
@@ -101,7 +105,7 @@ function removeItemFromList(event) {
     const Tasktext = event.target.parentElement.innerText.split('\n')[0];
 
     todos.forEach((task) => {
-      if (task['text'] === Tasktext) {
+      if (task['text'].trim() === Tasktext) {
         // get the index and remove it
         const taskIndex = todos.indexOf(task);
         todos.splice(taskIndex, 1);
@@ -115,46 +119,35 @@ function removeItemFromList(event) {
   }
 }
 
-// let draggedItem;
+let draggedItemPos;
+let currentItemPos;
 
-// function dragStart (event) {
-//   console.log('drag possible');
-//   draggedItem = event.
-//   console.log('current Item', draggedItem);
-// }
+function dragStart (event) {
+  console.log('drag possible');
+  draggedItemPos = event.target.getAttribute('position');
+}
 
-// function dragEnd (event) {
-//   if (draggedItem !== this) {
-//     console.log(draggedItem);
-//     console.log(this);
-//   }
-//   console.log('inside dragend');
-// }
+function dragOver (event) {
+  console.log('drag Over');
+  currentItemPos = event.target.getAttribute('position');
+  console.log('currentpos', currentItemPos);
+}
 
 
-// function dragOver (event) {
-//   console.log('drag Over');
-//   event.preventDefault();
-// }
-
-// function dragEnter () {
-//   console.log('drag Over');
-//   event.preventDefault();
-// }
-
-// function drop(event) {
-//   if (draggedItem !== this) {
-//     console.log(draggedItem);
-//     console.log(this);
-//     console.log(event);
-//   }
-//   console.log('inside drop');
-// }
+function dragEnd () {
+  console.log('drag End');
+  const draggedItem = todos.splice(draggedItemPos, 1);
+  todos.splice(currentItemPos, 0, draggedItem[0]);
+  console.log('todo', todos);
+  domRefresh();
+  setLocally();
+}
 
 
 // display local items if any
 domRefresh();
 setLocally();
+
 // Event Listeners
 form.addEventListener('submit', addItemToList);
 taskList.addEventListener('click', removeItemFromList);
@@ -162,8 +155,6 @@ taskList.addEventListener('click', checkTask);
 taskList.addEventListener('click', uncheckTask);
 
 
-// taskList.addEventListener('dragstart', dragStart);
-// taskList.addEventListener('dragend', dragEnd);
-// taskList.addEventListener('dragover', dragOver);
-// taskList.addEventListener('dragenter', dragEnter);
-// taskList.addEventListener('drop', drop);
+taskList.addEventListener('dragstart', dragStart);
+taskList.addEventListener('dragover', dragOver);
+taskList.addEventListener('dragend', dragEnd);
