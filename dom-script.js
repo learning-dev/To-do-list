@@ -97,15 +97,21 @@ function uncheckTask(event) {
 
 function removeItemFromList(event) {
   if (event.target.classList.contains('delete-btn')) {
-    // eslint-disable-next-line no-restricted-globals
 
-    const task = event.target.parentElement;
-    taskList.removeChild(task);
+    const Tasktext = event.target.parentElement.innerText.split('\n')[0];
 
-    // remove from local storage
-    const text = task.innerText.replace('delete', '');
-    delete todos[text];
-    setLocally();
+    todos.forEach((task) => {
+      if (task['text'] === Tasktext) {
+        // get the index and remove it
+        const taskIndex = todos.indexOf(task);
+        todos.splice(taskIndex, 1);
+      }
+    });
+
+    domRefresh();
+
+    // mark it as complete in local storage
+    localStorage.setItem('todos', JSON.stringify(todos));
   }
 }
 
