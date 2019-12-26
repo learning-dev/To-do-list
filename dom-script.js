@@ -79,16 +79,18 @@ function checkTask(event) {
 
 function uncheckTask(event) {
   if (event.target.localName === 's') {
-    const text = event.target.innerText;
-    const parent = event.target.parentElement;
-    parent.setAttribute('draggable', 'true');
-    parent.removeChild(event.target);
-    const deleteBtn = parent.childNodes[0];
-    parent.insertBefore(document.createTextNode(text), deleteBtn);
+    const Tasktext = event.target.innerText;
 
-    // set locally
-    todos[text] = false;
-    setLocally();
+    todos.forEach((task) => {
+      if (task['text'] === Tasktext) {
+        task['status'] = false;
+      }
+    });
+
+    domRefresh();
+
+    // mark it as complete in local storage
+    localStorage.setItem('todos', JSON.stringify(todos));
   }
 }
 
