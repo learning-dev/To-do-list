@@ -38,14 +38,22 @@ function domRefresh() {
     const li = document.createElement('li');
     const position = todos.indexOf(task);
 
+    // checkbox
+    const checkbox = document.createElement('input');
+    checkbox.setAttribute('type', 'checkbox');
+    checkbox.setAttribute('class', 'checkbox-class');
+
     li.setAttribute('draggable', 'true');
     li.setAttribute('position', position);
 
     if (task['status'] === true) {
       const strike = document.createElement('s');
       strike.appendChild(document.createTextNode(task['text']));
+      checkbox.setAttribute('checked', true);
+      li.appendChild(checkbox);
       li.appendChild(strike);
     } else {
+      li.appendChild(checkbox);
       li.appendChild(document.createTextNode(task['text']));
     }
     const delBtn = createDeleteButton();
@@ -122,19 +130,19 @@ function removeItemFromList(event) {
 let draggedItemPos;
 let currentItemPos;
 
-function dragStart (event) {
+function dragStart(event) {
   console.log('drag possible');
   draggedItemPos = event.target.getAttribute('position');
 }
 
-function dragOver (event) {
+function dragOver(event) {
   console.log('drag Over');
   currentItemPos = event.target.getAttribute('position');
   console.log('currentpos', currentItemPos);
 }
 
 
-function dragEnd () {
+function dragEnd() {
   console.log('drag End');
   const draggedItem = todos.splice(draggedItemPos, 1);
   todos.splice(currentItemPos, 0, draggedItem[0]);
