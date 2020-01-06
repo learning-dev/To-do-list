@@ -44,3 +44,7 @@ h1 {
 .checkbox-class {
   margin-right: 15px;
 }
+
+.list-items {
+  list-style-type: none;
+}
